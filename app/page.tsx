@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DesktopPet, type PetStatus } from "@/components/desktop-pet";
 import { FileUpload } from "@/components/file-upload";
 import { LearningPlanDesigner } from "@/components/learning-plan-designer";
-  Hero,
+import 
+  {Hero,
   PreparationGuide,
   PreparationGuideLink,
   ProgressNav,

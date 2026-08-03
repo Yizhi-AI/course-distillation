@@ -23,6 +23,7 @@ import {
   stripSourceClues,
 } from "@/lib/distillation-client";
 import { downloadBlob, safeFileName } from "@/lib/download";
+import { withBasePath } from "@/lib/base-path";
 import {
   buildCourseCorpus,
   MaterialFile,
@@ -129,10 +130,10 @@ export default function Home() {
     if (!subject) return;
 
     let cancelled = false;
-    const promptUrl = getSubject(subject)?.promptUrl;
-    if (!promptUrl) return;
+    const promptPath = getSubject(subject)?.promptPath;
+    if (!promptPath) return;
 
-    fetch(promptUrl)
+    fetch(withBasePath(promptPath))
       .then(async (response) => {
         if (!response.ok) {
           throw new Error("提示词加载失败");
@@ -227,8 +228,7 @@ export default function Home() {
     mode: "map" | "preview" | "full",
     courseMap = "",
   ) {
-    const expectedSubject =
-      subject === "custom" ? "" : getSubject(subject)?.title ?? "";
+    const expectedSubject = getSubject(subject)?.expectedSubject ?? "";
     return requestDistillation({
       provider: providerId,
       model: model.trim(),
@@ -324,25 +324,28 @@ export default function Home() {
     );
   }
 
+  function downloadCourseMap() {
+    if (!courseMapSnapshot) return;
+    const subjectTitle = getSubject(subject)?.title ?? "网课";
+    downloadBlob(
+      new Blob([courseMapSnapshot.result], {
+        type: "text/markdown;charset=utf-8",
+      }),
+      `${safeFileName(subjectTitle)}-课程地图.md`,
+    );
+  }
+
   async function downloadWord() {
     if (!finalResult) return;
     setError("");
     try {
       const subjectTitle = getSubject(subject)?.title ?? "网课";
-      const response = await fetch("/api/export/word", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          markdown: cleanFinalResult,
-          title: `${subjectTitle}课程蒸馏报告`,
-        }),
-      });
-      if (!response.ok) {
-        const data = (await response.json()) as { error?: string };
-        throw new Error(data.error || "Word 文件生成失败");
-      }
+      const { createWordBlob } = await import("@/lib/word-export");
       downloadBlob(
-        await response.blob(),
+        await createWordBlob(
+          cleanFinalResult,
+          `${subjectTitle}课程蒸馏报告`,
+        ),
         `${safeFileName(subjectTitle)}课程蒸馏报告.docx`,
       );
     } catch (exportError) {
@@ -441,27 +444,27 @@ export default function Home() {
           </div>
 
           <div className="subject-grid">
-            {subjects.map((item) => (
+            {subjects.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 className={[
                   subject === item.id ? "is-selected" : "",
-                  item.customizable ? "is-pending" : "",
+                  item.isTemplate ? "is-pending" : "",
                 ]
                   .filter(Boolean)
                   .join(" ")}
                 onClick={() => {
                   setSubject(item.id);
-                  setPromptOpen(item.customizable);
+                  setPromptOpen(item.openPromptByDefault);
                   setPrompt("");
                   setDefaultPrompt("");
                   setPromptLoading(true);
                   resetGeneratedResults();
                 }}
               >
-                <small>{item.number}</small>
-                {item.customizable && <em>待更新</em>}
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                {item.badge && <em>{item.badge}</em>}
                 <strong>{item.title}</strong>
                 <span>{item.description}</span>
                 <i aria-hidden="true">{subject === item.id ? "✓" : "＋"}</i>
@@ -483,14 +486,14 @@ export default function Home() {
                     <strong>
                       {promptLoading
                         ? "正在加载标准提示词…"
-                        : getSubject(subject)?.customizable
+                        : getSubject(subject)?.isTemplate
                           ? "通用模板已加载：请按科目自定义"
                           : `已加载：${
                               getSubject(subject)?.title
                             }标准蒸馏方案`}
                     </strong>
                     <small>
-                      {getSubject(subject)?.customizable
+                      {getSubject(subject)?.isTemplate
                         ? "该科目标准方案待更新，你可以直接修改下方提示词"
                         : "普通用户可以直接使用，也可以修改本次要求"}
                     </small>
@@ -687,10 +690,18 @@ export default function Home() {
           )}
 
           {courseMapSnapshot && courseMapIsReusable && (
-            <details className="course-map-result">
-              <summary>查看系统生成的课程地图</summary>
-              <pre>{courseMapSnapshot.result}</pre>
-            </details>
+            <section className="course-map-result">
+              <div className="course-map-heading">
+                <strong>课程地图已生成</strong>
+                <button type="button" onClick={downloadCourseMap}>
+                  <span>M↓</span>下载课程地图
+                </button>
+              </div>
+              <details>
+                <summary>展开查看系统生成的课程地图</summary>
+                <pre>{courseMapSnapshot.result}</pre>
+              </details>
+            </section>
           )}
         </section>
 

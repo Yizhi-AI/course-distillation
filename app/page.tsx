@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DesktopPet, type PetStatus } from "@/components/desktop-pet";
 import { FileUpload } from "@/components/file-upload";
-import {
+import { LearningPlanDesigner } from "@/components/learning-plan-designer";
   Hero,
   PreparationGuide,
   PreparationGuideLink,
@@ -41,6 +41,7 @@ type RunStatus =
 
 export default function Home() {
   const resultRef = useRef<HTMLElement>(null);
+  const [learningPlanOpen, setLearningPlanOpen] = useState(false);
   const [materials, setMaterials] = useState<MaterialFile[]>([]);
   const [fileWarnings, setFileWarnings] = useState<string[]>([]);
   const [subject, setSubject] = useState<SubjectId | "">("");
@@ -354,13 +355,18 @@ export default function Home() {
   }
 
   return (
-    <main>
-      <SiteHeader />
-      <Hero />
-      <ProgressNav />
-      <DesktopPet key={petStatus} status={petStatus} />
+  <main>
+    <SiteHeader />
+    <Hero onOpenLearningPlan={() => setLearningPlanOpen(true)} />
+    <ProgressNav />
+    <DesktopPet key={petStatus} status={petStatus} />
 
-      <div className="workspace">
+    <LearningPlanDesigner
+      open={learningPlanOpen}
+      onClose={() => setLearningPlanOpen(false)}
+    />
+
+    <div className="workspace">
         <section className="work-card" id="materials">
           <div className="section-heading">
             <div>

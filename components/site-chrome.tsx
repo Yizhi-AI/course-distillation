@@ -25,7 +25,11 @@ export function SiteHeader() {
   );
 }
 
-export function Hero() {
+export function Hero({
+  onOpenLearningPlan,
+}: {
+  onOpenLearningPlan: () => void;
+}) {
   return (
     <section className="hero" id="top">
       <div className="hero-copy">
@@ -38,18 +42,17 @@ export function Hero() {
           上传讲义、逐字稿和题本，提炼老师的思路、方法、例题和易错点，接入你的专注学习网页。
         </p>
         <div className="hero-actions">
-  <a className="hero-primary" href="#materials">
-    开始上传资料
-  </a>
-
-  <button
-    className="hero-primary learning-plan-trigger"
-    type="button"
-    onClick={onOpenLearningPlan}
-  >
-    设计学习方案
-  </button>
-  <a className="hero-secondary hero-contact" href="#contact-footer">
+          <a className="hero-primary" href="#materials">
+            开始上传资料
+          </a>
+          <button
+            className="hero-primary learning-plan-trigger"
+            type="button"
+            onClick={onOpenLearningPlan}
+          >
+            设计学习方案
+          </button>
+          <a className="hero-secondary hero-contact" href="#contact-footer">
             <span>
               帮助咨询 / 私人定制
               <b aria-hidden="true">→</b>

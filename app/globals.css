@@ -285,7 +285,8 @@ footer {
   margin-top: 26px;
 }
 
-.hero-actions a {
+.hero-actions a,
+.hero-actions button {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -295,13 +296,15 @@ footer {
   font-size: 13px;
   font-weight: 750;
   text-decoration: none;
+  cursor: pointer;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
     background 160ms ease;
 }
 
-.hero-actions a:hover {
+.hero-actions a:hover,
+.hero-actions button:hover {
   transform: translateY(-1px);
 }
 
@@ -316,6 +319,314 @@ footer {
   background: rgba(255, 255, 255, 0.58);
   color: var(--ink);
 }
+
+.learning-plan-trigger {
+  padding-inline: 18px;
+  border: 0;
+}
+
+.learning-plan-dialog {
+  width: min(900px, calc(100% - 32px));
+  max-height: min(92vh, 960px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 28px 90px rgba(48, 40, 33, 0.24);
+}
+
+.learning-plan-dialog::backdrop {
+  background: rgba(35, 29, 24, 0.48);
+  backdrop-filter: blur(4px);
+}
+
+.learning-plan-shell {
+  max-height: min(92vh, 960px);
+  overflow-y: auto;
+}
+
+.learning-plan-heading {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 26px 28px 22px;
+  border-bottom: 1px solid var(--line-soft);
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.learning-plan-heading small {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.learning-plan-heading h2 {
+  margin: 0;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 28px;
+}
+
+.learning-plan-heading p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.learning-plan-close {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.learning-plan-fields {
+  display: grid;
+  gap: 24px;
+  padding: 26px 28px;
+}
+
+.learning-plan-fields fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.learning-plan-fields legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 0;
+}
+
+.learning-plan-fields legend span {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.learning-plan-fields legend strong {
+  font-size: 14px;
+}
+
+.learning-plan-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.learning-plan-options button {
+  position: relative;
+  min-height: 90px;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 7px;
+  padding: 16px 38px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.learning-plan-options button:hover {
+  transform: translateY(-1px);
+  border-color: var(--green);
+}
+
+.learning-plan-options button.is-selected {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.learning-plan-options button strong {
+  font-size: 13px;
+}
+
+.learning-plan-options button span {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.learning-plan-options button i {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: white;
+  font-size: 10px;
+  font-style: normal;
+}
+
+.learning-plan-options button.is-selected i {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.learning-plan-result {
+  margin: 0 28px 28px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--drop-bg);
+}
+
+.learning-plan-result-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+
+.learning-plan-result-heading > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.learning-plan-result-heading small {
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.learning-plan-result-heading strong {
+  font-size: 13px;
+}
+
+.learning-plan-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.learning-plan-tags span {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.learning-plan-result textarea {
+  display: block;
+  width: 100%;
+  min-height: 320px;
+  resize: vertical;
+  padding: 18px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.learning-plan-result-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  background: var(--card);
+}
+
+.learning-plan-result-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.learning-plan-result-footer > div {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+}
+
+.learning-plan-result-footer button {
+  min-height: 36px;
+  padding: 0 13px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.learning-plan-copy {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+}
+
+.learning-plan-download {
+  border: 1px solid var(--orange);
+  background: var(--orange);
+  color: white;
+}
+
+.learning-plan-empty {
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px;
+}
+
+.learning-plan-empty strong {
+  font-size: 13px;
+}
+
+.learning-plan-empty span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
 
 .hero-contact {
   position: relative;
@@ -1957,12 +2268,76 @@ footer {
 
   .hero-actions {
     align-items: stretch;
+    flex-wrap: wrap;
     margin-top: 22px;
   }
 
-  .hero-actions a {
-    flex: 1;
+  .hero-actions a,
+  .hero-actions button {
+    flex: 1 1 calc(50% - 6px);
     padding: 0 12px;
+  }
+
+  .hero-contact {
+    flex-basis: 100% !important;
+  }
+
+  .learning-plan-dialog {
+    width: calc(100% - 16px);
+    max-height: calc(100vh - 16px);
+    border-radius: 16px;
+  }
+
+  .learning-plan-shell {
+    max-height: calc(100vh - 16px);
+  }
+
+  .learning-plan-heading {
+    padding: 20px 18px 17px;
+  }
+
+  .learning-plan-heading h2 {
+    font-size: 24px;
+  }
+
+  .learning-plan-fields {
+    gap: 22px;
+    padding: 22px 18px;
+  }
+
+  .learning-plan-options {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-plan-options button {
+    min-height: 76px;
+  }
+
+  .learning-plan-result {
+    margin: 0 18px 18px;
+  }
+
+  .learning-plan-result-heading,
+  .learning-plan-result-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .learning-plan-tags {
+    justify-content: flex-start;
+  }
+
+  .learning-plan-result textarea {
+    min-height: 300px;
+  }
+
+  .learning-plan-result-footer > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .learning-plan-result-footer button {
+    min-height: 42px;
   }
 
   .distillation-preview {
